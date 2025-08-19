@@ -15,7 +15,7 @@ function TodoForm({ onAddTodo }) {
 
   return (
     <form onSubmit={handleAddTodo}>
-      <TextInputWithLabels
+      <TextInputWithLabel
         elementId="todoTitle"
         labelText="Todo"
         ref={todoTitleInput}
