@@ -25,7 +25,9 @@ function App() {
         const resp = await fetch(url, options);
 
         if (!resp.ok) {
-          throw new Error(resp.message);
+          throw new Error(
+            `Request failed with status ${resp.status}: ${resp.statusText}`
+          );
         }
 
         const { records } = await resp.json();
@@ -85,7 +87,9 @@ function App() {
       const resp = await fetch(url, options);
 
       if (!resp.ok) {
-        throw new Error(resp.message);
+        throw new Error(
+          `Request failed with status ${resp.status}: ${resp.statusText}`
+        );
       }
 
       const { records } = await resp.json();
@@ -140,13 +144,17 @@ function App() {
       const resp = await fetch(url, options);
 
       if (!resp.ok) {
-        throw new Error(resp.message);
+        throw new Error(
+          `Request failed with status ${resp.status}: ${resp.statusText}`
+        );
       }
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
-      const revertedTodos = originalTodo;
-      setTodoList(...revertedTodos);
+      const revertedTodos = todoList.map((todo) =>
+        todo.id === id ? originalTodo : todo
+      );
+      setTodoList(revertedTodos);
     } finally {
       setIsSaving(false);
     }
@@ -185,13 +193,17 @@ function App() {
       const resp = await fetch(url, options);
 
       if (!resp.ok) {
-        throw new Error(resp.message);
+        throw new Error(
+          `Request failed with status ${resp.status}: ${resp.statusText}`
+        );
       }
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
-      const revertedTodos = originalTodo;
-      setTodoList(...revertedTodos);
+      const revertedTodos = todoList.map((todo) =>
+        todo.id === editedTodo.id ? originalTodo : todo
+      );
+      setTodoList(revertedTodos);
     } finally {
       setIsSaving(false);
     }
