@@ -130,7 +130,7 @@ function App() {
 
     try {
       setIsSaving(true);
-      apiRequest(url, token, 'PATCH', payload);
+      const resp = await apiRequest(url, token, 'PATCH', payload);
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
@@ -165,7 +165,7 @@ function App() {
 
     try {
       setIsSaving(true);
-      apiRequest(url, token, 'PATCH', payload);
+      const resp = await apiRequest(url, token, 'PATCH', payload);
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
