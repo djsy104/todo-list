@@ -3,6 +3,40 @@ import './App.css';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 
+function transformRecordToTodo(record) {
+  const todo = {
+    id: record.id,
+    ...record.fields,
+  };
+
+  if (!todo.isCompleted) {
+    todo.isCompleted = false;
+  }
+
+  return todo;
+}
+
+async function apiRequest(endpoint, token, method = 'GET', body = null) {
+  const options = {
+    method,
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : null,
+  };
+
+  const resp = await fetch(endpoint, options);
+
+  if (!resp.ok) {
+    throw new Error(
+      `Request failed with status ${resp.status}: ${resp.statusText}`
+    );
+  }
+
+  return resp.json();
+}
+
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,38 +48,9 @@ function App() {
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
-      const options = {
-        method: 'GET',
-        headers: {
-          Authorization: token,
-        },
-      };
-
       try {
-        const resp = await fetch(url, options);
-
-        if (!resp.ok) {
-          throw new Error(
-            `Request failed with status ${resp.status}: ${resp.statusText}`
-          );
-        }
-
-        const { records } = await resp.json();
-
-        setTodoList(
-          records.map((record) => {
-            const todo = {
-              id: record.id,
-              ...record.fields, //Destructures out all properties out of fields into Todo
-            };
-
-            if (!todo.isCompleted) {
-              todo.isCompleted = false;
-            }
-
-            return todo;
-          })
-        );
+        const { records } = await apiRequest(url, token);
+        setTodoList(records.map(transformRecordToTodo));
       } catch (error) {
         setErrorMessage(error.message);
       } finally {
@@ -94,15 +99,7 @@ function App() {
 
       const { records } = await resp.json();
 
-      const savedTodo = {
-        id: records[0].id,
-        ...records[0].fields,
-      };
-
-      if (!records[0].fields.isCompleted) {
-        savedTodo.isCompleted = false;
-      }
-
+      const savedTodo = transformRecordToTodo(records[0]);
       setTodoList([...todoList, savedTodo]);
     } catch (error) {
       console.log(error);
@@ -131,23 +128,9 @@ function App() {
       ],
     };
 
-    const options = {
-      method: 'PATCH',
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    };
-
     try {
-      const resp = await fetch(url, options);
-
-      if (!resp.ok) {
-        throw new Error(
-          `Request failed with status ${resp.status}: ${resp.statusText}`
-        );
-      }
+      setIsSaving(true);
+      apiRequest(url, token, 'PATCH', payload);
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
@@ -180,23 +163,9 @@ function App() {
       ],
     };
 
-    const options = {
-      method: 'PATCH',
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    };
-
     try {
-      const resp = await fetch(url, options);
-
-      if (!resp.ok) {
-        throw new Error(
-          `Request failed with status ${resp.status}: ${resp.statusText}`
-        );
-      }
+      setIsSaving(true);
+      apiRequest(url, token, 'PATCH', payload);
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
