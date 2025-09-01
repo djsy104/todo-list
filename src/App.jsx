@@ -2,8 +2,22 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
+import TodosViewForm from './features/TodosViewForm';
 
-function transformRecordToTodo(record) {
+const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+const token = `Bearer ${import.meta.env.VITE_PAT}`;
+
+const encodeUrl = ({ sortField, sortDirection, queryString }) => {
+  let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+  let searchQuery = '';
+  if (queryString) {
+    searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+  }
+
+  return encodeURI(`${url}?${sortQuery}${searchQuery}`);
+};
+
+const transformRecordToTodo = (record) => {
   const todo = {
     id: record.id,
     ...record.fields,
@@ -14,9 +28,9 @@ function transformRecordToTodo(record) {
   }
 
   return todo;
-}
+};
 
-async function apiRequest(endpoint, token, method = 'GET', body = null) {
+const apiRequest = async (endpoint, token, method = 'GET', body = null) => {
   const options = {
     method,
     headers: {
@@ -35,21 +49,25 @@ async function apiRequest(endpoint, token, method = 'GET', body = null) {
   }
 
   return resp.json();
-}
+};
 
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-  const token = `Bearer ${import.meta.env.VITE_PAT}`;
+  const [sortField, setSortField] = useState('createdTime');
+  const [sortDirection, setSortDirection] = useState('desc');
+  const [queryString, setQueryString] = useState('');
 
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
       try {
-        const { records } = await apiRequest(url, token);
+        const { records } = await apiRequest(
+          encodeUrl({ sortField, sortDirection, queryString }),
+          token
+        );
         setTodoList(records.map(transformRecordToTodo));
       } catch (error) {
         setErrorMessage(error.message);
@@ -58,7 +76,7 @@ function App() {
       }
     };
     fetchTodos();
-  }, []);
+  }, [sortDirection, sortField, queryString]);
 
   async function addTodo(title) {
     const newTodo = {
@@ -89,7 +107,10 @@ function App() {
 
     try {
       setIsSaving(true);
-      const resp = await fetch(url, options);
+      const resp = await fetch(
+        encodeUrl({ sortField, sortDirection, queryString }),
+        options
+      );
 
       if (!resp.ok) {
         throw new Error(
@@ -130,7 +151,12 @@ function App() {
 
     try {
       setIsSaving(true);
-      const resp = await apiRequest(url, token, 'PATCH', payload);
+      const resp = await apiRequest(
+        encodeUrl({ sortField, sortDirection, queryString }),
+        token,
+        'PATCH',
+        payload
+      );
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
@@ -165,7 +191,12 @@ function App() {
 
     try {
       setIsSaving(true);
-      const resp = await apiRequest(url, token, 'PATCH', payload);
+      const resp = await apiRequest(
+        encodeUrl({ sortField, sortDirection, queryString }),
+        token,
+        'PATCH',
+        payload
+      );
     } catch (error) {
       console.log(error);
       setErrorMessage(`${error.message}. Reverting todo...`);
@@ -189,6 +220,15 @@ function App() {
         onUpdateTodo={updateTodo}
         isLoading={isLoading}
         isSaving={isSaving}
+      />
+      <hr />
+      <TodosViewForm
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+        sortField={sortField}
+        setSortField={setSortField}
+        queryString={queryString}
+        setQueryString={setQueryString}
       />
       {errorMessage && (
         <div>
