@@ -1,4 +1,12 @@
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+`;
 
 function TodosViewForm({
   sortDirection,
@@ -21,7 +29,7 @@ function TodosViewForm({
   }
   return (
     <>
-      <form onSubmit={preventRefresh}>
+      <StyledForm onSubmit={preventRefresh}>
         <div>
           <label>Search todos:</label>
           <input
@@ -64,7 +72,7 @@ function TodosViewForm({
             <option value="desc">Descending</option>
           </select>
         </div>
-      </form>
+      </StyledForm>
     </>
   );
 }
