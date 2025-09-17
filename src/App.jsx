@@ -4,6 +4,8 @@ import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 import TodosViewForm from './features/TodosViewForm';
 import styles from './App.module.css';
+import styled from 'styled-components';
+import errorIcon from './assets/error.svg';
 
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
@@ -41,6 +43,16 @@ const apiRequest = async (endpoint, token, method = 'GET', body = null) => {
 
   return resp.json();
 };
+
+const StyledErrorIcon = styled.img`
+  width: 1.5rem;
+  height: 1.5rem;
+`;
+
+const StyledErrorMessage = styled.p`
+  display: flex;
+  align-items; center;
+  `;
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -217,7 +229,10 @@ function App() {
       {errorMessage && (
         <div className={styles.error}>
           <hr />
-          <p>{errorMessage}</p>
+          <StyledErrorMessage>
+            <StyledErrorIcon src={errorIcon} alt="error icon" />
+            {errorMessage}Testing
+          </StyledErrorMessage>
           <button onClick={() => setErrorMessage('')}>Dismiss</button>
         </div>
       )}
