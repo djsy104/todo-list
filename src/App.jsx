@@ -6,6 +6,7 @@ import TodosViewForm from './features/TodosViewForm';
 import styles from './App.module.css';
 import styled from 'styled-components';
 import errorIcon from './assets/error.svg';
+import todoLogo from './assets/checklist.svg';
 
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
@@ -49,10 +50,10 @@ const StyledErrorIcon = styled.img`
   height: 1.5rem;
 `;
 
-const StyledErrorMessage = styled.p`
-  display: flex;
-  align-items; center;
-  `;
+const StyledLogo = styled.img`
+  width: 3rem;
+  height: 3rem;
+`;
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -207,7 +208,9 @@ function App() {
 
   return (
     <div className={styles.container}>
-      <h1>My Todos</h1>
+      <h1 className={styles.title}>
+        My Todos <StyledLogo src={todoLogo} alt="checklist icon" />
+      </h1>
       <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
 
       <TodoList
@@ -229,10 +232,10 @@ function App() {
       {errorMessage && (
         <div className={styles.error}>
           <hr />
-          <StyledErrorMessage>
+          <p className={styles.errorMessage}>
             <StyledErrorIcon src={errorIcon} alt="error icon" />
-            {errorMessage}Testing
-          </StyledErrorMessage>
+            {errorMessage}
+          </p>
           <button onClick={() => setErrorMessage('')}>Dismiss</button>
         </div>
       )}
