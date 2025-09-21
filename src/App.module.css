@@ -16,3 +16,13 @@
 .container hr {
   width: 100%;
 }
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
