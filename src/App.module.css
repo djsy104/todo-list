@@ -1,0 +1,18 @@
+.error {
+  border: 2px solid var(--dark-blue);
+  border-radius: 0.25rem;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  min-height: 70vh;
+}
+
+.container hr {
+  width: 100%;
+}

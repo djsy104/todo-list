@@ -1,0 +1,84 @@
+:root {
+  --white: #f5efe6;
+  --blue: #6d94c5;
+  --light-blue: #cbdceb;
+  --dark-blue: #5a82b3;
+  --beige: #e8dfca;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: var(--white);
+  color: var(--blue);
+  margin: 0;
+}
+
+h1 {
+  margin: 2rem;
+}
+
+label {
+  font-weight: bold;
+}
+
+input,
+select {
+  font-family: inherit;
+}
+
+input {
+  font-size: 1rem;
+  padding: 0.25rem;
+  margin: 0.25rem;
+  border: 1px solid var(--dark-blue);
+  border-radius: 0.25rem;
+}
+
+button {
+  background-color: var(--blue);
+  color: white;
+  font: inherit;
+  border: 0;
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  margin-left: 1rem;
+  transition: transform 100ms ease-in-out;
+}
+
+button:not(:disabled):hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+button:not(:disabled):active {
+  background-color: var(--dark-blue);
+  transform: scale(0.98);
+}
+
+select {
+  padding: 0.25rem;
+  margin: 0.5rem;
+  color: var(--dark-blue);
+  background-color: white;
+  border: 1px solid var(--dark-blue);
+  border-radius: 0.25rem;
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
