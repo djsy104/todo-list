@@ -61,7 +61,7 @@ function App() {
 
   useEffect(() => {
     const fetchTodos = async () => {
-      dispatch({ type: todoActions.startRequest });
+      dispatch({ type: todoActions.fetchTodos });
       try {
         const { records } = await apiRequest(encodeUrl(), token);
         dispatch({ type: todoActions.loadTodos, records });
