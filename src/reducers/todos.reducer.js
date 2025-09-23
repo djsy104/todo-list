@@ -3,6 +3,9 @@ const initialState = {
   isLoading: false,
   isSaving: false,
   errorMessage: '',
+  sortField: 'createdTime',
+  sortDirection: 'desc',
+  queryString: '',
 };
 
 const actions = {
@@ -27,6 +30,11 @@ const actions = {
 
   //action on 'Dismiss Error' button
   clearError: 'clearError',
+
+  //sorting and filtering
+  setSortField: 'setSortField',
+  setSortDirection: 'setSortDirection',
+  setQueryString: 'setQueryString',
 };
 
 const transformRecordToTodo = (record) => {
@@ -89,22 +97,6 @@ function reducer(state = initialState, action) {
       };
     }
 
-    // case actions.updateTodo: {
-    //   const updatedTodos = state.todoList.map((todo) =>
-    //     todo.id === action.editedTodo.id ? { ...action.editedTodo } : todo
-    //   );
-
-    //   const updatedState = {
-    //     ...state,
-    //     todoList: updatedTodos,
-    //   };
-
-    //   if (action.error) {
-    //     updatedState.errorMessage = action.error.message;
-    //   }
-
-    //   return updatedState;
-    // }
     case actions.revertTodo:
     case actions.updateTodo: {
       const targetTodo = action.editedTodo ?? action.originalTodo;
@@ -136,6 +128,24 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         errorMessage: '',
+      };
+
+    case actions.setSortField:
+      return {
+        ...state,
+        sortField: action.field,
+      };
+
+    case actions.setSortDirection:
+      return {
+        ...state,
+        sortDirection: action.direction,
+      };
+
+    case actions.setQueryString:
+      return {
+        ...state,
+        queryString: action.query,
       };
   }
 }

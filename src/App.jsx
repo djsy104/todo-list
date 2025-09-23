@@ -48,19 +48,16 @@ const StyledLogo = styled.img`
 `;
 
 function App() {
-  const [sortField, setSortField] = useState('createdTime');
-  const [sortDirection, setSortDirection] = useState('desc');
-  const [queryString, setQueryString] = useState('');
   const [todoState, dispatch] = useReducer(todosReducer, initialTodosState);
   const encodeUrl = useCallback(() => {
-    let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+    let sortQuery = `sort[0][field]=${todoState.sortField}&sort[0][direction]=${todoState.sortDirection}`;
     let searchQuery = '';
-    if (queryString) {
-      searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+    if (todoState.queryString) {
+      searchQuery = `&filterByFormula=SEARCH("${todoState.queryString}",+title)`;
     }
 
     return encodeURI(`${url}?${sortQuery}${searchQuery}`);
-  }, [queryString, sortDirection, sortField]);
+  }, [todoState.queryString, todoState.sortDirection, todoState.sortField]);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -75,7 +72,7 @@ function App() {
       }
     };
     fetchTodos();
-  }, [sortDirection, sortField, queryString]);
+  }, [todoState.sortDirection, todoState.sortField, todoState.queryString]);
 
   async function addTodo(title) {
     const newTodo = {
@@ -194,12 +191,18 @@ function App() {
       />
       <hr />
       <TodosViewForm
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        sortField={sortField}
-        setSortField={setSortField}
-        queryString={queryString}
-        setQueryString={setQueryString}
+        sortDirection={todoState.sortDirection}
+        setSortDirection={(direction) =>
+          dispatch({ type: todoActions.setSortDirection, direction })
+        }
+        sortField={todoState.sortField}
+        setSortField={(field) =>
+          dispatch({ type: todoActions.setSortField, field })
+        }
+        queryString={todoState.queryString}
+        setQueryString={(query) =>
+          dispatch({ type: todoActions.setQueryString, query })
+        }
       />
       {todoState.errorMessage && (
         <div className={styles.error}>
