@@ -89,26 +89,28 @@ function reducer(state = initialState, action) {
       };
     }
 
-    case actions.updateTodo: {
-      const updatedTodos = state.todoList.map((todo) =>
-        todo.id === action.editedTodo.id ? { ...action.editedTodo } : todo
-      );
+    // case actions.updateTodo: {
+    //   const updatedTodos = state.todoList.map((todo) =>
+    //     todo.id === action.editedTodo.id ? { ...action.editedTodo } : todo
+    //   );
 
-      const updatedState = {
-        ...state,
-        todoList: updatedTodos,
-      };
+    //   const updatedState = {
+    //     ...state,
+    //     todoList: updatedTodos,
+    //   };
 
-      if (action.error) {
-        updatedState.errorMessage = action.error.message;
-      }
+    //   if (action.error) {
+    //     updatedState.errorMessage = action.error.message;
+    //   }
 
-      return updatedState;
-    }
-
+    //   return updatedState;
+    // }
+    case actions.updateTodo:
     case actions.revertTodo: {
+      const targetTodo = action.editedTodo ?? action.originalTodo;
+
       const revertedTodos = state.todoList.map((todo) =>
-        todo.id === action.id ? { ...action.originalTodo } : todo
+        todo.id === targetTodo.id ? { ...targetTodo } : todo
       );
 
       const updatedState = {

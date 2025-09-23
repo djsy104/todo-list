@@ -48,10 +48,6 @@ const StyledLogo = styled.img`
 `;
 
 function App() {
-  // const [todoList, setTodoList] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState('');
-  // const [isSaving, setIsSaving] = useState(false);
   const [sortField, setSortField] = useState('createdTime');
   const [sortDirection, setSortDirection] = useState('desc');
   const [queryString, setQueryString] = useState('');
