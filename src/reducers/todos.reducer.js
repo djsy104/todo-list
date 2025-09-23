@@ -105,8 +105,8 @@ function reducer(state = initialState, action) {
 
     //   return updatedState;
     // }
-    case actions.updateTodo:
-    case actions.revertTodo: {
+    case actions.revertTodo:
+    case actions.updateTodo: {
       const targetTodo = action.editedTodo ?? action.originalTodo;
 
       const revertedTodos = state.todoList.map((todo) =>
