@@ -1,0 +1,24 @@
+.active,
+.inactive {
+  text-decoration: none;
+}
+
+.active {
+  color: #4a6689;
+}
+
+.inactive {
+  color: #6d94c5;
+}
+
+h1 {
+  text-align: ceer;
+}
+
+nav {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
