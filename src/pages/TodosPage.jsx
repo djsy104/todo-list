@@ -23,7 +23,9 @@ function TodosPage({
   const itemsPerPage = 15;
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const indexOfFirstTodo = (currentPage - 1) * itemsPerPage;
+  const indexOfLastTodo = indexOfFirstTodo + itemsPerPage;
   const totalPages = Math.ceil(todoList.length / itemsPerPage);
+  const currentTodos = todoList.slice(indexOfFirstTodo, indexOfLastTodo);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,32 +53,34 @@ function TodosPage({
       <TodoForm onAddTodo={onAddTodo} isSaving={isSaving} />
 
       <TodoList
-        todoList={todoList}
+        todoList={currentTodos}
         onCompleteTodo={onCompleteTodo}
         onUpdateTodo={onUpdateTodo}
         isLoading={isLoading}
         isSaving={isSaving}
       />
 
-      <div className={styles.paginationControls}>
-        <button
-          className={styles.paginationBtn}
-          onClick={() => handlePreviousPage()}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className={styles.paginationBtn}
-          onClick={() => handleNextPage()}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className={styles.paginationControls}>
+          <button
+            className={styles.paginationBtn}
+            onClick={() => handlePreviousPage()}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className={styles.paginationBtn}
+            onClick={() => handleNextPage()}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
       <hr />
       <TodosViewForm
         sortDirection={sortDirection}
