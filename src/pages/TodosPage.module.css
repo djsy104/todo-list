@@ -1,0 +1,13 @@
+.paginationControls {
+  margin-bottom: 1rem;
+}
+
+.paginationBtn {
+  margin: 0 1rem;
+}
+
+.paginationBtn:disabled {
+  font-style: italic;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
