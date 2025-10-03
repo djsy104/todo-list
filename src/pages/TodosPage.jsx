@@ -22,10 +22,14 @@ function TodosPage({
   const [searchParams, setSearchParams] = useSearchParams();
   const itemsPerPage = 15;
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
   const indexOfFirstTodo = (currentPage - 1) * itemsPerPage;
   const indexOfLastTodo = indexOfFirstTodo + itemsPerPage;
-  const totalPages = Math.ceil(todoList.length / itemsPerPage);
-  const currentTodos = todoList.slice(indexOfFirstTodo, indexOfLastTodo);
+  const totalPages = Math.ceil(filteredTodoList.length / itemsPerPage);
+  const currentTodos = filteredTodoList.slice(
+    indexOfFirstTodo,
+    indexOfLastTodo
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
