@@ -69,7 +69,7 @@ function TodosPage({
           </div>
 
           <div className={styles.todoListContainer}>
-            <div className={styles.todoList}>
+            <div className={styles.todoListWrap}>
               <TodoList
                 todoList={currentTodos}
                 onCompleteTodo={onCompleteTodo}
