@@ -54,46 +54,55 @@ function TodosPage({
 
   return (
     <>
-      <TodoForm onAddTodo={onAddTodo} isSaving={isSaving} />
+      <div className={styles.todosPageContainer}>
+        <TodoForm onAddTodo={onAddTodo} isSaving={isSaving} />
+        <div className={styles.gridContainer}>
+          <div className={styles.todosViewContainer}>
+            <TodosViewForm
+              sortDirection={sortDirection}
+              setSortDirection={setSortDirection}
+              sortField={sortField}
+              setSortField={setSortField}
+              queryString={queryString}
+              setQueryString={setQueryString}
+            />
+          </div>
 
-      <TodoList
-        todoList={currentTodos}
-        onCompleteTodo={onCompleteTodo}
-        onUpdateTodo={onUpdateTodo}
-        isLoading={isLoading}
-        isSaving={isSaving}
-      />
+          <div className={styles.todoListContainer}>
+            <div className={styles.todoList}>
+              <TodoList
+                todoList={currentTodos}
+                onCompleteTodo={onCompleteTodo}
+                onUpdateTodo={onUpdateTodo}
+                isLoading={isLoading}
+                isSaving={isSaving}
+              />
+            </div>
 
-      {totalPages > 1 && (
-        <div className={styles.paginationControls}>
-          <button
-            className={styles.paginationBtn}
-            onClick={() => handlePreviousPage()}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            className={styles.paginationBtn}
-            onClick={() => handleNextPage()}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+            {totalPages > 1 && (
+              <div className={styles.paginationControls}>
+                <button
+                  className={styles.paginationBtn}
+                  onClick={() => handlePreviousPage()}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+                <span>
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  className={styles.paginationBtn}
+                  onClick={() => handleNextPage()}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-      <hr />
-      <TodosViewForm
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        sortField={sortField}
-        setSortField={setSortField}
-        queryString={queryString}
-        setQueryString={setQueryString}
-      />
+      </div>
     </>
   );
 }

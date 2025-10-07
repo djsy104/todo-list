@@ -11,7 +11,7 @@ const StyledLogo = styled.img`
 function Header({ title }) {
   return (
     <>
-      <h1>
+      <h1 className={styles.title}>
         {title}
         {title == 'Todo List' && (
           <StyledLogo src={todoLogo} alt="checklist icon" />

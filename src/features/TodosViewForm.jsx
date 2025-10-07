@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import styles from './TodosViewForm.module.css';
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
+  min-height: 20vh;
+`;
+
+const StyledButton = styled.button`
+  padding: 0.5rem;
 `;
 
 function TodosViewForm({
@@ -32,24 +38,26 @@ function TodosViewForm({
       <StyledForm onSubmit={preventRefresh}>
         <div>
           <label>Search todos:</label>
-          <input
-            type="text"
-            value={localQueryString}
-            onChange={(e) => {
-              setLocalQueryString(e.target.value);
-            }}
-          />
-          <button
-            type="button"
-            onClick={() => {
-              setLocalQueryString('');
-            }}
-          >
-            Clear
-          </button>
+          <div className={styles.inputGroup}>
+            <input
+              type="text"
+              value={localQueryString}
+              onChange={(e) => {
+                setLocalQueryString(e.target.value);
+              }}
+            />
+            <StyledButton
+              type="button"
+              onClick={() => {
+                setLocalQueryString('');
+              }}
+            >
+              Clear
+            </StyledButton>
+          </div>
         </div>
         <div>
-          <label htmlFor="sort-select">Sort by</label>
+          <label htmlFor="sort-select">Sort by:</label>
           <select
             onChange={(e) => {
               setSortField(e.target.value);
@@ -60,7 +68,9 @@ function TodosViewForm({
             <option value="title">Title</option>
             <option value="createdTime">Time added</option>
           </select>
-          <label htmlFor="direction-select">Direction</label>
+        </div>
+        <div>
+          <label htmlFor="direction-select">Direction:</label>
           <select
             onChange={(e) => {
               setSortDirection(e.target.value);

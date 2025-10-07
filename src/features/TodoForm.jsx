@@ -3,6 +3,10 @@ import { useState } from 'react';
 import TextInputWithLabel from '../shared/TextInputWithLabel';
 import styled from 'styled-components';
 
+const StyledForm = styled.form`
+  display: block;
+`;
+
 const StyledButton = styled.button`
   &:disabled {
     font-style: italic;
@@ -23,7 +27,7 @@ function TodoForm({ onAddTodo, isSaving }) {
   }
 
   return (
-    <form onSubmit={handleAddTodo}>
+    <StyledForm onSubmit={handleAddTodo}>
       <TextInputWithLabel
         elementId="todoTitle"
         labelText="Todo"
@@ -34,7 +38,7 @@ function TodoForm({ onAddTodo, isSaving }) {
       <StyledButton disabled={workingTodoTitle.trim().length === 0}>
         {isSaving ? 'Saving...' : 'Add todo'}
       </StyledButton>
-    </form>
+    </StyledForm>
   );
 }
 
